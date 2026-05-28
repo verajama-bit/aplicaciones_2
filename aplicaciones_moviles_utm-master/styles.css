@@ -1,26 +1,61 @@
-/* ==========================================================
+/* =============================================================================
    SISTEMA DE TRANSPORTE Y RUTAS UNIVERSITARIAS
    Grupo 7 – Aplicaciones Móviles
-   styles.css – Hoja de estilos principal (Actividad 2)
-   ========================================================== */
+   styles.css – Hoja de estilos principal (Actividad 2 – Refactorización)
 
-/* ----------------------------------------------------------
-   1. TOKENS DE DISEÑO (CSS Custom Properties)
-   ---------------------------------------------------------- */
+   ESTRUCTURA DE SECCIONES:
+   01. Importación de fuentes
+   02. Tokens de diseño (CSS Custom Properties)
+   03. Reset y base
+   04. Header
+   05. Layout principal
+   06. Cards / Paneles
+   07. Tipografía de sección
+   08. Inputs y Select
+   09. Botones
+   10. Tarjetas de ruta
+   11. Badges y etiquetas
+   12. Mensajes de retroalimentación y Toast
+   13. Estado vacío (Empty State)
+   14. Contador de registros
+   15. Panel de detalle de ruta
+   16. Barra de filtros (grid)
+   17. Formulario (grid)
+   18. Separador
+   19. Listado de rutas
+   20. Footer
+   21. Animaciones
+   22. Utilidades
+   23. Responsive (media queries)
+   ============================================================================= */
+
+
+/* =============================================================================
+   01. IMPORTACIÓN DE FUENTES
+   Fuente principal: DM Sans (legibilidad en interfaces de datos)
+   Fuente monoespaciada: Space Mono (números, badges, contadores)
+   ============================================================================= */
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Space+Mono:wght@400;700&display=swap');
 
+
+/* =============================================================================
+   02. TOKENS DE DISEÑO (CSS Custom Properties)
+   Centralización de valores reutilizables: colores, tipografía, espaciado,
+   radios, sombras y transiciones. Modificar aquí afecta todo el sistema.
+   ============================================================================= */
 :root {
-  /* Paleta principal */
-  --color-primary:        #1d4ed8;
-  --color-primary-hover:  #1e40af;
-  --color-primary-light:  #dbeafe;
-  --color-primary-muted:  #93c5fd;
 
-  /* Paleta de acento */
-  --color-accent:         #0891b2;
-  --color-accent-light:   #cffafe;
+  /* ── Paleta principal ───────────────────────────────────────────────────── */
+  --color-primary:        #1d4ed8;   /* Azul institucional */
+  --color-primary-hover:  #1e40af;   /* Azul oscuro (hover) */
+  --color-primary-light:  #dbeafe;   /* Azul claro (fondos) */
+  --color-primary-muted:  #93c5fd;   /* Azul suave (bordes) */
 
-  /* Semánticos */
+  /* ── Paleta de acento ───────────────────────────────────────────────────── */
+  --color-accent:         #0891b2;   /* Cyan (rutas Expreso) */
+  --color-accent-light:   #cffafe;   /* Cyan claro (fondo badge Expreso) */
+
+  /* ── Colores semánticos ─────────────────────────────────────────────────── */
   --color-success:        #059669;
   --color-success-bg:     #d1fae5;
   --color-success-border: #6ee7b7;
@@ -37,29 +72,29 @@
   --color-info-bg:        #eff6ff;
   --color-info-border:    #bfdbfe;
 
-  /* Superficie y fondo */
+  /* ── Superficie y fondo ─────────────────────────────────────────────────── */
   --bg-body:              #f0f4f8;
   --bg-card:              #ffffff;
   --bg-card-alt:          #f8fafc;
   --bg-sidebar:           #1e293b;
 
-  /* Texto */
+  /* ── Texto ──────────────────────────────────────────────────────────────── */
   --text-heading:         #0f172a;
   --text-body:            #1e293b;
   --text-muted:           #64748b;
   --text-subtle:          #94a3b8;
   --text-on-dark:         #f1f5f9;
 
-  /* Bordes */
+  /* ── Bordes ─────────────────────────────────────────────────────────────── */
   --border-light:         #e2e8f0;
   --border-medium:        #cbd5e1;
   --border-focus:         var(--color-primary);
 
-  /* Tipografía */
+  /* ── Tipografía ─────────────────────────────────────────────────────────── */
   --font-sans:            'DM Sans', system-ui, sans-serif;
   --font-mono:            'Space Mono', monospace;
 
-  /* Espaciado */
+  /* ── Espaciado (escala de 8px) ──────────────────────────────────────────── */
   --space-xs:   4px;
   --space-sm:   8px;
   --space-md:   16px;
@@ -67,30 +102,32 @@
   --space-xl:   32px;
   --space-2xl:  48px;
 
-  /* Radios */
-  --radius-sm:  6px;
-  --radius-md:  10px;
-  --radius-lg:  16px;
-  --radius-xl:  24px;
+  /* ── Radios de borde ────────────────────────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
   --radius-pill: 999px;
 
-  /* Sombras */
-  --shadow-xs:  0 1px 2px rgba(0,0,0,0.06);
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md:  0 4px 6px -1px rgba(0,0,0,0.10), 0 2px 4px -1px rgba(0,0,0,0.06);
-  --shadow-lg:  0 10px 15px -3px rgba(0,0,0,0.10), 0 4px 6px -2px rgba(0,0,0,0.05);
-  --shadow-xl:  0 20px 25px -5px rgba(0,0,0,0.10), 0 10px 10px -5px rgba(0,0,0,0.04);
+  /* ── Sombras ────────────────────────────────────────────────────────────── */
+  --shadow-xs:         0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-sm:         0 1px 3px rgba(0, 0, 0, 0.10), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md:         0 4px 6px -1px rgba(0, 0, 0, 0.10), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg:         0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl:         0 20px 25px -5px rgba(0, 0, 0, 0.10), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   --shadow-card-hover: 0 8px 30px rgba(29, 78, 216, 0.12);
 
-  /* Transiciones */
+  /* ── Transiciones ───────────────────────────────────────────────────────── */
   --transition-fast:   150ms ease;
   --transition-base:   250ms ease;
   --transition-smooth: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ----------------------------------------------------------
-   2. RESET Y BASE
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   03. RESET Y BASE
+   Normalización de márgenes, box-model y tipografía global.
+   ============================================================================= */
 *, *::before, *::after {
   margin: 0;
   padding: 0;
@@ -108,31 +145,57 @@ body {
   line-height: 1.6;
   color: var(--text-body);
   background-color: var(--bg-body);
-  /* Patrón de puntos sutil como textura de fondo */
+  /* Patrón punteado sutil para dar textura al fondo */
   background-image: radial-gradient(circle, #c7d2e0 1px, transparent 1px);
   background-size: 28px 28px;
-  padding: var(--space-lg);
+  padding: var(--space-xl);
+  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* ----------------------------------------------------------
-   3. HEADER
-   ---------------------------------------------------------- */
+/* Contenedor global: centra y limita el ancho de todo el contenido */
+.page-wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =============================================================================
+   04. HEADER
+   Banda principal de identidad con degradado institucional y círculos
+   decorativos generados con pseudo-elementos.
+   ============================================================================= */
 .header {
   position: relative;
   overflow: hidden;
   background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 60%, #0891b2 100%);
   color: white;
-  padding: var(--space-2xl) var(--space-xl);
+  padding: 52px var(--space-2xl);
   border-radius: var(--radius-xl);
   text-align: center;
-  margin-bottom: var(--space-xl);
+  margin-bottom: var(--space-2xl);
   box-shadow: var(--shadow-xl);
 }
 
-/* Círculos decorativos en el header */
-.header::before,
+/* Círculo decorativo superior-izquierdo */
+.header::before {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+  background: white;
+  pointer-events: none;
+  width: 320px;
+  height: 320px;
+  top: -100px;
+  left: -80px;
+}
+
+/* Círculo decorativo inferior-derecho */
 .header::after {
   content: '';
   position: absolute;
@@ -140,27 +203,10 @@ body {
   opacity: 0.08;
   background: white;
   pointer-events: none;
-}
-.header::before {
-  width: 320px;
-  height: 320px;
-  top: -100px;
-  left: -80px;
-}
-.header::after {
   width: 200px;
   height: 200px;
   bottom: -60px;
   right: -40px;
-}
-
-.header__eyebrow {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  opacity: 0.7;
-  margin-bottom: var(--space-sm);
 }
 
 .header h1 {
@@ -179,14 +225,14 @@ body {
   margin: 0 auto;
 }
 
-/* Contador de registros en el header */
+/* Bloque de estadísticas dentro del header */
 .header__stats {
   display: inline-flex;
   align-items: center;
   gap: var(--space-md);
   margin-top: var(--space-lg);
-  background: rgba(255,255,255,0.12);
-  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: var(--radius-pill);
   padding: var(--space-sm) var(--space-lg);
   backdrop-filter: blur(8px);
@@ -208,18 +254,21 @@ body {
 .header__stats-divider {
   width: 1px;
   height: 20px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* ----------------------------------------------------------
-   4. LAYOUT PRINCIPAL
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   05. LAYOUT PRINCIPAL
+   Grid de dos columnas: panel izquierdo (filtros + listado) y
+   panel derecho (formulario + detalle). Se colapsa a una columna
+   en pantallas menores a 1100px.
+   ============================================================================= */
 .contenedor-principal {
   display: grid;
-  grid-template-columns: 1.7fr 1.3fr;
+  grid-template-columns: 1.6fr 1.4fr;
   gap: var(--space-xl);
-  max-width: 1440px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .panel-izquierdo,
@@ -227,21 +276,17 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--space-xl);
+  min-width: 0; /* Evita desbordamiento en grid */
 }
 
-/* ----------------------------------------------------------
-   5. CARDS / PANELES
-   ---------------------------------------------------------- */
-.card {
-  background-color: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-light);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
-  transition: box-shadow var(--transition-base);
-}
 
-/* Alias de compatibilidad con clases del prototipo anterior */
+/* =============================================================================
+   06. CARDS / PANELES
+   Componente base de superficie blanca con borde y sombra sutil.
+   Las clases .filtros, .listado-rutas, .formulario y .detalle-ruta
+   son alias semánticos que heredan el mismo estilo base.
+   ============================================================================= */
+.card,
 .filtros,
 .listado-rutas,
 .formulario,
@@ -251,9 +296,10 @@ body {
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
+  transition: box-shadow var(--transition-base);
 }
 
-/* Cabecera de sección dentro de cada panel */
+/* Cabecera interna de cada panel */
 .card__header,
 .panel-header {
   display: flex;
@@ -263,25 +309,24 @@ body {
   margin-bottom: var(--space-md);
 }
 
-/* Cuerpo del panel con padding estándar */
-.card__body,
-.filtros > *:not(h2),
-.formulario > *:not(h2),
-.detalle-ruta > *:not(h2),
-.listado-rutas > *:not(h2) {
+/* Cuerpo del panel: padding estándar */
+.card__body {
   padding: 0 var(--space-lg) var(--space-lg);
 }
 
-/* Forzar padding completo para los paneles heredados */
+/* Padding completo para paneles semánticos */
 .filtros,
 .formulario,
 .detalle-ruta {
-  padding: var(--space-lg);
+  padding: var(--space-xl);
 }
 
-/* ----------------------------------------------------------
-   6. TIPOGRAFÍA DE SECCIÓN
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   07. TIPOGRAFÍA DE SECCIÓN
+   Encabezados h2 con marcador azul vertical generado por ::before.
+   h3 para subtítulos internos de tarjetas y paneles.
+   ============================================================================= */
 h2 {
   font-size: 1.05rem;
   font-weight: 700;
@@ -290,9 +335,10 @@ h2 {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
 }
 
-/* Ícono decorativo de sección */
+/* Marcador vertical de sección */
 h2::before {
   content: '';
   display: inline-block;
@@ -320,33 +366,49 @@ label {
   margin-bottom: var(--space-xs);
 }
 
-/* Grupo de campo con etiqueta */
+/* Grupo de campo con etiqueta y espaciado inferior */
 .campo {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-lg);
 }
+
 .campo:last-of-type {
   margin-bottom: 0;
 }
 
-/* ----------------------------------------------------------
-   7. INPUTS Y SELECT
-   ---------------------------------------------------------- */
+/* Grupo de formulario (equivalente a .campo para el panel de registro) */
+.grupo-formulario {
+  margin-bottom: var(--space-md);
+}
+
+.grupo-formulario label {
+  margin-bottom: var(--space-xs);
+}
+
+
+/* =============================================================================
+   08. INPUTS Y SELECT
+   Estilos base compartidos para todos los controles de formulario.
+   Estados: normal, hover, focus, error, válido.
+   La flecha del select es un SVG inline codificado en base64.
+   ============================================================================= */
 input,
 select,
 textarea {
   width: 100%;
-  padding: 10px 14px;
+  padding: 11px 14px;
   border-radius: var(--radius-md);
   border: 1.5px solid var(--border-medium);
   background-color: var(--bg-card);
   color: var(--text-body);
   font-family: var(--font-sans);
   font-size: 0.9rem;
-  transition: border-color var(--transition-fast),
-              box-shadow var(--transition-fast),
-              background-color var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
   appearance: none;
   -webkit-appearance: none;
+  margin-bottom: var(--space-md);
 }
 
 input::placeholder,
@@ -370,21 +432,21 @@ textarea:focus {
   background-color: #fff;
 }
 
-/* Input con estado de error */
+/* Estado de error (añadido por JS al validar) */
 input.input--error,
 select.input--error {
   border-color: var(--color-error);
   box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
-/* Input con estado válido */
+/* Estado válido (añadido por JS al validar) */
 input.input--valid,
 select.input--valid {
   border-color: var(--color-success);
   box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
-/* Select: flecha personalizada */
+/* Flecha personalizada para todos los <select> */
 select {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -394,21 +456,24 @@ select {
   cursor: pointer;
 }
 
-/* Mensaje de error de campo */
+/* Mensaje de error de campo (mostrado por JS con .visible) */
 .campo__error {
   font-size: 0.78rem;
   color: var(--color-error);
   margin-top: var(--space-xs);
   display: none;
 }
+
 .campo__error.visible {
   display: block;
 }
 
-/* ----------------------------------------------------------
-   8. BOTONES
-   ---------------------------------------------------------- */
-/* Botón primario */
+
+/* =============================================================================
+   09. BOTONES
+   Botón primario como base. Variantes: secundario, ghost, peligro, pequeño.
+   Todos son 100% de ancho por defecto; usar .btn--auto para ancho natural.
+   ============================================================================= */
 button,
 .btn {
   display: inline-flex;
@@ -426,10 +491,11 @@ button,
   font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.01em;
-  transition: background-color var(--transition-fast),
-              transform var(--transition-fast),
-              box-shadow var(--transition-fast);
-  box-shadow: 0 1px 3px rgba(29,78,216,0.25), 0 4px 6px rgba(29,78,216,0.12);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(29, 78, 216, 0.25), 0 4px 6px rgba(29, 78, 216, 0.12);
   white-space: nowrap;
 }
 
@@ -437,13 +503,13 @@ button:hover,
 .btn:hover {
   background-color: var(--color-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(29,78,216,0.3);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
 }
 
 button:active,
 .btn:active {
   transform: translateY(0);
-  box-shadow: 0 1px 3px rgba(29,78,216,0.2);
+  box-shadow: 0 1px 3px rgba(29, 78, 216, 0.2);
 }
 
 button:disabled,
@@ -454,57 +520,68 @@ button:disabled,
   box-shadow: none;
 }
 
-/* Variantes de botón */
+/* Variante secundaria: borde azul, fondo transparente */
 .btn--secondary {
   background-color: transparent;
   color: var(--color-primary);
   border: 1.5px solid var(--color-primary);
   box-shadow: none;
 }
+
 .btn--secondary:hover {
   background-color: var(--color-primary-light);
   box-shadow: none;
 }
 
+/* Variante ghost: borde gris, texto muted */
 .btn--ghost {
   background-color: transparent;
   color: var(--text-muted);
   border: 1.5px solid var(--border-medium);
   box-shadow: none;
 }
+
 .btn--ghost:hover {
   background-color: var(--bg-card-alt);
   color: var(--text-body);
   box-shadow: none;
 }
 
+/* Variante peligro: rojo, usado para eliminar */
 .btn--danger {
   background-color: var(--color-error);
-  box-shadow: 0 1px 3px rgba(220,38,38,0.25);
-}
-.btn--danger:hover {
-  background-color: #b91c1c;
-  box-shadow: 0 4px 12px rgba(220,38,38,0.3);
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.25);
 }
 
+.btn--danger:hover {
+  background-color: #b91c1c;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+/* Variante pequeña */
 .btn--sm {
   padding: 7px 14px;
   font-size: 0.82rem;
   border-radius: var(--radius-sm);
 }
 
+/* Ancho automático (sin 100%) */
 .btn--auto {
   width: auto;
 }
 
-/* ----------------------------------------------------------
-   9. TARJETAS DE RUTA
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   10. TARJETAS DE RUTA
+   Cuadrícula dinámica de tarjetas generadas por JS en #contenedorRutas.
+   Cada .tarjeta tiene una línea de color en la parte superior (::before)
+   que se muestra permanentemente en rutas en mantenimiento.
+   ============================================================================= */
 #contenedorRutas {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: var(--space-md);
-  padding: var(--space-md) var(--space-lg) var(--space-lg);
+  gap: var(--space-lg);
+  padding: var(--space-md) var(--space-xl) var(--space-xl);
 }
 
 .tarjeta {
@@ -512,15 +589,16 @@ button:disabled,
   border-radius: var(--radius-md);
   border: 1.5px solid var(--border-light);
   padding: var(--space-md);
-  transition: transform var(--transition-smooth),
-              box-shadow var(--transition-smooth),
-              border-color var(--transition-base);
+  transition:
+    transform var(--transition-smooth),
+    box-shadow var(--transition-smooth),
+    border-color var(--transition-base);
   position: relative;
   overflow: hidden;
   cursor: default;
 }
 
-/* Línea de color superior según estado */
+/* Línea de acento superior (oculta por defecto, visible en hover o mantenimiento) */
 .tarjeta::before {
   content: '';
   position: absolute;
@@ -544,10 +622,15 @@ button:disabled,
   opacity: 1;
 }
 
-/* Tarjeta en mantenimiento: acento naranja */
+/* Rutas en mantenimiento: línea naranja siempre visible */
 .tarjeta--mantenimiento::before {
   background: var(--color-warning);
   opacity: 1;
+}
+
+/* Tarjeta recién añadida: entra con animación */
+.tarjeta--nueva {
+  animation: fadeSlideIn 0.4s ease forwards;
 }
 
 .tarjeta__titulo {
@@ -585,9 +668,12 @@ button:disabled,
   border-top: 1px solid var(--border-light);
 }
 
-/* ----------------------------------------------------------
-   10. BADGES Y ETIQUETAS
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   11. BADGES Y ETIQUETAS
+   Pequeñas etiquetas de estado y tipo. Usan font-mono para consistencia
+   con datos tabulares. Cada variante tiene su par de colores semánticos.
+   ============================================================================= */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -602,35 +688,43 @@ button:disabled,
   border: 1px solid transparent;
 }
 
-/* Estado */
+/* Estado: Disponible */
 .estado-disponible {
   background-color: var(--color-success-bg);
   color: var(--color-success);
   border-color: var(--color-success-border);
 }
 
+/* Estado: Mantenimiento */
 .estado-mantenimiento {
   background-color: var(--color-warning-bg);
   color: var(--color-warning);
   border-color: var(--color-warning-border);
 }
 
-/* Tipo de ruta */
+/* Tipo: Normal */
 .tipo-ruta {
   background-color: var(--color-primary-light);
   color: var(--color-primary);
   border-color: var(--color-primary-muted);
 }
 
+/* Tipo: Expreso */
 .tipo-expreso {
   background-color: var(--color-accent-light);
   color: var(--color-accent);
   border-color: #67e8f9;
 }
 
-/* ----------------------------------------------------------
-   11. MENSAJES DE RETROALIMENTACIÓN
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   12. MENSAJES DE RETROALIMENTACIÓN Y TOAST
+   .mensaje: inline dentro del formulario o panel de filtros.
+   .toast: notificación flotante (fixed) que aparece tras guardar.
+   Ambos tienen variantes de color semántico.
+   ============================================================================= */
+
+/* Mensaje inline */
 .mensaje {
   display: flex;
   align-items: center;
@@ -648,12 +742,17 @@ button:disabled,
   display: none;
 }
 
-/* Alias para id del prototipo anterior */
+/* Alias para el #mensaje del formulario heredado */
 #mensaje {
   margin-top: var(--space-sm);
   font-size: 0.85rem;
   font-weight: 500;
   min-height: 20px;
+}
+
+/* Alias para el #mensajeFiltro del panel de filtros */
+#mensajeFiltro:empty {
+  display: none;
 }
 
 .mensaje--exito,
@@ -682,7 +781,7 @@ button:disabled,
   border-color: var(--color-warning-border);
 }
 
-/* Indicador de guardado exitoso (toast) */
+/* Notificación flotante (toast) */
 .toast {
   position: fixed;
   bottom: var(--space-xl);
@@ -698,12 +797,16 @@ button:disabled,
   align-items: center;
   gap: var(--space-sm);
   z-index: 1000;
+  /* Oculto por defecto: desplazado hacia abajo */
   transform: translateY(80px);
   opacity: 0;
-  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+  transition:
+    transform var(--transition-smooth),
+    opacity var(--transition-smooth);
   pointer-events: none;
 }
 
+/* JS añade esta clase para mostrar el toast */
 .toast.toast--visible {
   transform: translateY(0);
   opacity: 1;
@@ -717,9 +820,12 @@ button:disabled,
   border-left: 4px solid var(--color-error);
 }
 
-/* ----------------------------------------------------------
-   12. ESTADO VACÍO (Empty state)
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   13. ESTADO VACÍO (Empty State)
+   Se muestra cuando no hay rutas registradas o los filtros no tienen
+   resultados. JS inserta este bloque dentro de #contenedorRutas.
+   ============================================================================= */
 .estado-vacio {
   display: flex;
   flex-direction: column;
@@ -755,9 +861,12 @@ button:disabled,
   max-width: 240px;
 }
 
-/* ----------------------------------------------------------
-   13. CONTADOR DE REGISTROS
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   14. CONTADOR DE REGISTROS
+   Badge que muestra el total de rutas en el encabezado del listado.
+   JS actualiza su contenido dinámicamente.
+   ============================================================================= */
 .contador-rutas {
   display: inline-flex;
   align-items: center;
@@ -773,9 +882,13 @@ button:disabled,
   border: 1px solid var(--color-primary-muted);
 }
 
-/* ----------------------------------------------------------
-   14. PANEL DE DETALLE DE RUTA
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   15. PANEL DE DETALLE DE RUTA
+   Área que muestra la información completa de la ruta seleccionada.
+   Estado inicial: placeholder centrado con borde punteado.
+   Estado activo (.activo): tarjeta de detalle alineada a la izquierda.
+   ============================================================================= */
 #detalleRuta {
   background-color: var(--bg-card-alt);
   padding: var(--space-lg);
@@ -790,6 +903,7 @@ button:disabled,
   transition: all var(--transition-base);
 }
 
+/* JS añade .activo al seleccionar una tarjeta */
 #detalleRuta.activo {
   background: var(--bg-card);
   border: 1.5px solid var(--border-light);
@@ -798,6 +912,7 @@ button:disabled,
   box-shadow: var(--shadow-sm);
 }
 
+/* Fila de campo dentro del detalle */
 .detalle-campo {
   display: flex;
   gap: var(--space-sm);
@@ -821,9 +936,16 @@ button:disabled,
   font-weight: 500;
 }
 
-/* ----------------------------------------------------------
-   15. BARRA DE FILTROS
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   16. BARRA DE FILTROS (grid)
+   El panel .filtros usa una cuadrícula de dos columnas para alinear
+   los controles de búsqueda y tipo. .campo--full ocupa el ancho completo.
+
+   Controles activos: #buscarDestino (texto) y #filtroTipo (select).
+   Controles heredados visibles: #buscarRuta, #filtroEstado, #ordenarRutas.
+   Todos comparten el mismo estilo visual para mantener coherencia.
+   ============================================================================= */
 .filtros-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -834,9 +956,149 @@ button:disabled,
   grid-column: 1 / -1;
 }
 
-/* ----------------------------------------------------------
-   16. FORMULARIO
-   ---------------------------------------------------------- */
+/* Separación entre campos del panel filtros con label */
+.filtros label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-xs);
+}
+
+/* El primer label no lleva margin-top */
+.filtros label:first-of-type {
+  margin-top: 0;
+}
+
+/* Estilos específicos de los controles activos de filtro */
+#buscarDestino,
+#filtroTipo {
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-medium);
+  background-color: var(--bg-card);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#buscarDestino:focus,
+#filtroTipo:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+}
+
+/* Flecha del select de tipo */
+#filtroTipo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Botón aplicar filtros */
+#btnFiltrar {
+  width: 100%;
+  padding: 11px var(--space-lg);
+  margin-top: var(--space-lg);
+  margin-bottom: 0;
+  background-color: var(--color-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+  box-shadow: 0 1px 3px rgba(29, 78, 216, 0.25), 0 4px 6px rgba(29, 78, 216, 0.12);
+}
+
+#btnFiltrar:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
+}
+
+#btnFiltrar:active {
+  transform: translateY(0);
+}
+
+/*
+ * CONTROLES HEREDADOS (Actividad 1)
+ * #buscarRuta, #filtroEstado y #ordenarRutas se mantienen visibles
+ * para conservar la funcionalidad del prototipo anterior.
+ * Se les aplica el mismo estilo que a los controles nuevos.
+ */
+#buscarRuta,
+#filtroEstado,
+#ordenarRutas {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-medium);
+  background-color: var(--bg-card);
+  color: var(--text-body);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  margin-top: var(--space-sm);
+  margin-bottom: 0;
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+#buscarRuta:focus,
+#filtroEstado:focus,
+#ordenarRutas:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(29, 78, 216, 0.12);
+}
+
+/* Flecha personalizada para los selects heredados */
+#filtroEstado,
+#ordenarRutas {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+/* Línea divisoria visual entre controles nuevos y heredados */
+#buscarRuta {
+  margin-top: var(--space-lg);
+  border-top: none;
+}
+
+
+/* =============================================================================
+   17. FORMULARIO (grid)
+   El panel .formulario usa una cuadrícula de dos columnas para los campos
+   del formulario de registro. .campo--full ocupa el ancho completo.
+   ============================================================================= */
 .formulario-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -847,29 +1109,35 @@ button:disabled,
   grid-column: 1 / -1;
 }
 
-/* ----------------------------------------------------------
-   17. SEPARADOR
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   18. SEPARADOR
+   Línea horizontal decorativa entre secciones dentro de un panel.
+   ============================================================================= */
 .divider {
   height: 1px;
   background: var(--border-light);
   margin: var(--space-md) 0;
 }
 
-/* ----------------------------------------------------------
-   18. LISTADO DE RUTAS (contenedor principal)
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   19. LISTADO DE RUTAS
+   Contenedor del grid de tarjetas con encabezado propio (h2 con padding
+   personalizado) y barra de herramientas para ordenamiento.
+   ============================================================================= */
 .listado-rutas {
   padding: 0;
 }
 
 .listado-rutas h2 {
-  padding: var(--space-lg) var(--space-lg) 0;
+  padding: var(--space-xl) var(--space-xl) 0;
   margin-bottom: var(--space-sm);
 }
 
+/* Barra de herramientas: contiene el contador y el selector de orden */
 .listado-rutas__toolbar {
-  padding: 0 var(--space-lg) var(--space-sm);
+  padding: 0 var(--space-xl) var(--space-sm);
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -884,6 +1152,7 @@ button:disabled,
   color: var(--text-muted);
 }
 
+/* Select de orden compacto, sin afectar el ancho de la barra */
 .listado-rutas__orden select {
   width: auto;
   padding: 5px 28px 5px 10px;
@@ -892,9 +1161,11 @@ button:disabled,
   margin-bottom: 0;
 }
 
-/* ----------------------------------------------------------
-   19. FOOTER
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   20. FOOTER
+   Barra inferior oscura con nombre del grupo y enlaces auxiliares.
+   ============================================================================= */
 .footer {
   margin-top: var(--space-2xl);
   padding: var(--space-xl);
@@ -907,6 +1178,7 @@ button:disabled,
   justify-content: space-between;
   flex-wrap: wrap;
   gap: var(--space-md);
+  width: 100%;
 }
 
 .footer__logo {
@@ -933,9 +1205,13 @@ button:disabled,
   color: var(--text-on-dark);
 }
 
-/* ----------------------------------------------------------
-   20. ANIMACIONES
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   21. ANIMACIONES
+   Keyframes reutilizables para transiciones de entrada, pulso y rotación.
+   ============================================================================= */
+
+/* Entrada suave: usado en .tarjeta--nueva */
 @keyframes fadeSlideIn {
   from {
     opacity: 0;
@@ -947,34 +1223,36 @@ button:disabled,
   }
 }
 
+/* Pulso: útil para indicadores de carga o estados pendientes */
 @keyframes pulse {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.5; }
 }
 
+/* Rotación continua: usado en .cargando */
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
 
-/* Nueva tarjeta al registrarse */
-.tarjeta--nueva {
-  animation: fadeSlideIn 0.4s ease forwards;
-}
-
-/* Indicador de carga */
+/* Indicador de carga (spinner) */
 .cargando {
   display: inline-block;
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255,255,255,0.4);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   border-top-color: white;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 
-/* ----------------------------------------------------------
-   21. UTILIDADES
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   22. UTILIDADES
+   Clases de uso general para layout, tipografía y espaciado.
+   Se aplican directamente en el HTML cuando no justifican un componente.
+   ============================================================================= */
+
+/* Accesibilidad: ocultar visualmente pero mantener para lectores de pantalla */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -982,70 +1260,110 @@ button:disabled,
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0,0,0,0);
+  clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
 }
 
+/* Texto */
 .text-center  { text-align: center; }
 .text-right   { text-align: right; }
 .text-muted   { color: var(--text-muted); }
 .text-small   { font-size: 0.82rem; }
 .text-mono    { font-family: var(--font-mono); }
 
+/* Márgenes */
 .mt-sm  { margin-top: var(--space-sm); }
 .mt-md  { margin-top: var(--space-md); }
 .mt-lg  { margin-top: var(--space-lg); }
 .mb-sm  { margin-bottom: var(--space-sm); }
 .mb-md  { margin-bottom: var(--space-md); }
 
-.d-flex         { display: flex; }
-.align-center   { align-items: center; }
-.justify-between{ justify-content: space-between; }
-.gap-sm         { gap: var(--space-sm); }
-.gap-md         { gap: var(--space-md); }
-.flex-wrap      { flex-wrap: wrap; }
+/* Flex helpers */
+.d-flex          { display: flex; }
+.align-center    { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-sm          { gap: var(--space-sm); }
+.gap-md          { gap: var(--space-md); }
+.flex-wrap       { flex-wrap: wrap; }
 
-/* ----------------------------------------------------------
-   22. RESPONSIVE
-   ---------------------------------------------------------- */
+
+/* =============================================================================
+   23. RESPONSIVE (Media Queries)
+   Breakpoints:
+   - 1100px: colapso del grid principal a una columna.
+   - 768px:  ajuste de padding, header y formularios.
+   - 480px:  simplificación de tipografía y elementos secundarios.
+   ============================================================================= */
+
+/* ── 1100px: layout de una columna ─────────────────────────────────────────── */
 @media (max-width: 1100px) {
   .contenedor-principal {
     grid-template-columns: 1fr;
   }
+
+  /* El panel derecho (formulario + detalle) sube al tope */
   .panel-derecho {
-    order: -1; /* formulario arriba en móvil */
+    order: -1;
   }
 }
 
+/* ── 768px: mobile-first ajustes generales ──────────────────────────────────── */
 @media (max-width: 768px) {
-  body { padding: var(--space-sm); }
+  body {
+    padding: var(--space-md);
+  }
 
   .header {
     padding: var(--space-xl) var(--space-lg);
     border-radius: var(--radius-lg);
+    margin-bottom: var(--space-xl);
   }
-  .header h1 { font-size: 1.5rem; }
-  .header__stats { flex-direction: column; gap: var(--space-sm); }
-  .header__stats-divider { display: none; }
+
+  .header h1 {
+    font-size: 1.5rem;
+  }
+
+  .header__stats {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .header__stats-divider {
+    display: none;
+  }
+
+  .filtros,
+  .formulario,
+  .detalle-ruta {
+    padding: var(--space-lg);
+  }
+
+  #contenedorRutas {
+    grid-template-columns: 1fr;
+    padding: var(--space-md) var(--space-lg) var(--space-lg);
+  }
+
+  .listado-rutas h2 {
+    padding: var(--space-lg) var(--space-lg) 0;
+  }
 
   .formulario-grid,
   .filtros-grid {
     grid-template-columns: 1fr;
   }
+
   .formulario-grid .campo--full,
   .filtros-grid .campo--full {
     grid-column: 1;
   }
 
-  #contenedorRutas {
-    grid-template-columns: 1fr;
-  }
-
   .footer {
     flex-direction: column;
     text-align: center;
+    padding: var(--space-lg);
   }
+
   .footer__links {
     justify-content: center;
   }
@@ -1057,7 +1375,13 @@ button:disabled,
   }
 }
 
+/* ── 480px: simplificación extrema ─────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .header p { display: none; }
-  h2 { font-size: 0.95rem; }
+  .header p {
+    display: none;
+  }
+
+  h2 {
+    font-size: 0.95rem;
+  }
 }
