@@ -132,7 +132,7 @@ export function cerrarDetalles() {
         </p>
     `;
 }
-
+.
 /**
  * Inicialización
  */
