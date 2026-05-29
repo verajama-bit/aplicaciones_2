@@ -1,51 +1,70 @@
-import {guardarRutasStorage} from "../models/services/storage.js";
+```javascript
+import { renderizarRutas } from "./render.js";
 
-// Elementos principales
-const formRuta = document.getElementById("formRuta");
-
-const mensaje = document.getElementById("mensaje");
-
-
-// Array principal
-let rutas = [];
+import {
+    agregarRuta,
+    obtenerRutas
+}
+from "./services/module-service.js";
 
 
-// Evento submit
-formRuta.addEventListener(
-    "submit",
-    registrarRuta
-);
+// MENSAJE
+const mensaje =
+    document.getElementById("mensaje");
 
 
-// Registrar nueva ruta
+// FORMULARIO
+const formRuta =
+    document.getElementById("formRuta");
+
+
+// EVENTO SUBMIT
+if (formRuta) {
+
+    formRuta.addEventListener(
+        "submit",
+        registrarRuta
+    );
+}
+
+
+/**
+ * Registrar nueva ruta
+ */
 function registrarRuta(event) {
+
     event.preventDefault();
 
-    // Capturar datos
+    // CAPTURAR DATOS
     const destino =
-        document.getElementById("destino")
-        .value
-        .trim();
+        document
+            .getElementById("destino")
+            .value
+            .trim();
 
     const bus =
-        document.getElementById("bus")
-        .value
-        .trim();
+        document
+            .getElementById("bus")
+            .value
+            .trim();
 
     const horario =
-        document.getElementById("horario")
-        .value;
+        document
+            .getElementById("horario")
+            .value;
 
     const estado =
-        document.getElementById("estado")
-        .value;
+        document
+            .getElementById("estado")
+            .value;
 
     const tipo =
-        document.getElementById("tipo")
-        .value;
+        document
+            .getElementById("tipo")
+            .value;
 
 
-    // Validar campos vacíos
+    // VALIDACIONES
     if (
         destino === "" ||
         bus === "" ||
@@ -61,11 +80,11 @@ function registrarRuta(event) {
     }
 
 
-    // Validar longitud mínima
+    // VALIDAR DESTINO
     if (destino.length < 3) {
 
         mostrarMensaje(
-            "Destino demasiado corto.",
+            "El destino debe tener mínimo 3 caracteres.",
             "error"
         );
 
@@ -73,11 +92,11 @@ function registrarRuta(event) {
     }
 
 
-    // Validar nombre bus
+    // VALIDAR BUS
     if (bus.length < 3) {
 
         mostrarMensaje(
-            "Nombre del bus inválido.",
+            "El nombre del bus es demasiado corto.",
             "error"
         );
 
@@ -85,30 +104,48 @@ function registrarRuta(event) {
     }
 
 
-    // Regla de negocio:
-    // evitar rutas repetidas
-    const existeRuta = rutas.some(ruta =>
-        ruta.bus.toLowerCase() === bus.toLowerCase() && ruta.horario === horario
-    );
+    // OBTENER RUTAS
+    const rutas =
+        obtenerRutas();
+
+
+    // REGLA NEGOCIO:
+    // EVITAR HORARIOS REPETIDOS
+    const existeRuta =
+        rutas.some(ruta =>
+
+            ruta.bus.toLowerCase() ===
+            bus.toLowerCase()
+
+            &&
+
+            ruta.horario === horario
+        );
+
 
     if (existeRuta) {
+
         mostrarMensaje(
             "Ya existe una ruta con ese horario.",
             "error"
         );
+
         return;
     }
 
 
-    // Generar ID automático
+    // GENERAR NUEVO ID
     const nuevoId =
-        rutas.length > 0 ?
+        rutas.length > 0
+        ?
         rutas[rutas.length - 1].id + 1
-        : 1;
+        :
+        1;
 
 
-    // Crear objeto ruta
+    // CREAR OBJETO
     const nuevaRuta = {
+
         id: nuevoId,
         destino,
         bus,
@@ -118,53 +155,56 @@ function registrarRuta(event) {
     };
 
 
-    // Insertar nueva ruta
-    rutas.push(nuevaRuta);
+    // AGREGAR RUTA
+    agregarRuta(nuevaRuta);
 
 
-    // Guardar información
-    const guardadoCorrecto =
-        guardarRutasStorage(rutas);
+    // ACTUALIZAR INTERFAZ
+    renderizarRutas(
+        obtenerRutas()
+    );
 
 
-    // Validar guardado
-    if (guardadoCorrecto) {
-
-        mostrarMensaje(
-            "Ruta registrada correctamente.",
-            "success"
-        );
-
-    } else {
-
-        mostrarMensaje(
-            "Error al guardar.",
-            "error"
-        );
-    }
+    // MENSAJE ÉXITO
+    mostrarMensaje(
+        "Ruta registrada correctamente.",
+        "success"
+    );
 
 
-    // Actualizar interfaz
-    renderizarRutas(rutas);
-
-
-    // Limpiar formulario
+    // LIMPIAR FORMULARIO
     formRuta.reset();
 }
 
 
-// Mostrar mensajes
-function mostrarMensaje(texto, tipo) {
+/**
+ * Mostrar mensajes
+ */
+function mostrarMensaje(
+    texto,
+    tipo
+){
+
+    if (!mensaje) {
+
+        return;
+    }
+
     mensaje.textContent = texto;
+
     mensaje.style.color =
         tipo === "error"
         ?
         "#ef4444"
         :
         "#10b981";
-    // Ocultar mensaje
+
+
+    // OCULTAR MENSAJE
     setTimeout(() => {
+
         mensaje.textContent = "";
+
     }, 3000);
 }
-
+```
